@@ -5,8 +5,8 @@
  */
 
 import { getAllWindows, getCurrentWindow } from '@tauri-apps/api/window'
-import { WebviewWindow, getAllWebviewWindows, getCurrentWebviewWindow} from '@tauri-apps/api/webviewWindow'
-import { emit, listen } from '@tauri-apps/api/event'
+import { WebviewWindow} from '@tauri-apps/api/webviewWindow'
+import {  listen } from '@tauri-apps/api/event'
 
 // import { setWin } from './actions'
 

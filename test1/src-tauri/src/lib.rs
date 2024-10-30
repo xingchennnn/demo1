@@ -2,35 +2,34 @@
 use serde::Serialize;
 use tauri::Emitter;
 
-mod tray; 
+mod commands;
+mod tray;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+    // 打开一个窗口
+    // api::window::create("Hello", None);
+    // 发送一个通知
+    // let mut em = Emitter::new("notification");
+    // em.send("Hello, Rust! You've been greeted from Rust!", "info");
 
-//接收事件 close 关闭窗口
-fn close(){
-    println!("close window");
-}
-
-#[tauri::command]
-fn send_event(app_handle: tauri::AppHandle, message: String) {
-    app_handle.emit("rust_event", message).unwrap();
+    println!("rust接收到的参数 ,{}", name);
+    format!("rust 返回参数 {}", name)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
-            #[cfg(all(desktop))]{
+            #[cfg(all(desktop))]
+            {
                 let handle = app.handle();
                 tray::create_tray(handle)?;
             }
             Ok(())
         })
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, commands::close])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -38,8 +37,7 @@ pub fn run() {
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct DownloadStarted<'a> {
-  url: &'a str,
-  download_id: usize,
-  content_length: usize,
+    url: &'a str,
+    download_id: usize,
+    content_length: usize,
 }
-

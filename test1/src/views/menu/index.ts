@@ -1,9 +1,9 @@
-import { ref } from 'vue'
+// import { ref } from 'vue'
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
-import { emit, listen } from '@tauri-apps/api/event'
+import {  listen } from '@tauri-apps/api/event'
 import { LogicalPosition } from '@tauri-apps/api/window'
-import { TrayIcon } from '@tauri-apps/api/tray'
-import { invoke } from '@tauri-apps/api/core'
+// import { TrayIcon } from '@tauri-apps/api/tray'
+// import { invoke } from '@tauri-apps/api/core'
 
 export let menuBoxWindowWidth = 150
 export let menuBoxWindowHeight = JSON.parse(localStorage.getItem('logged')||'false') ? 320 : 45
@@ -51,4 +51,10 @@ export default async function CreateTraymenu() {
             await win.show()
         }
     })
+    trayEnterListen.then(() => {
+        console.log('traymenu enter listen')
+    }).catch(err => {
+        console.error(err)
+    })
+
 }

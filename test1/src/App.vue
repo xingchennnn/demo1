@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import msg from "./views/msg/index.vue";
+import axios from "axios";
 
 const greetMsg = ref("");
 const name = ref("");
@@ -9,15 +10,27 @@ const name1 = ref("");
 
 async function greet() {
   // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
+  axios.get('http://192.168.110.201:18003/ford-yftx/game/getConfig').then(function (response) {
+    console.log(response);
+    let str = response.data
+    greet2(str)
+  }).catch(function (error) {
+    console.log(error);
+  });
+
+}
+
+async function greet2(str: any) {
+  let str1 = JSON.stringify(str)
+  greetMsg.value = await invoke("greet", { name: str1 });
+  console.log('greetMsg', greetMsg.value);
 }
 
 async function close() {
   // 与tauri通讯,调用系统关机
-  name1.value = await invoke("close");
-  
-  console.log('关机' , name1.value);
-  
+  name1.value = await invoke("close", { close: "关机" });
+
+  console.log('关机', name1.value);
 }
 </script>
 
@@ -38,12 +51,13 @@ async function close() {
     </div>
     <!-- <p>Click on the Tauri, Vite, and Vue logos to learn more. wefwefwe</p> -->
 
-    <!-- <form class="row" @submit.prevent="greet">
+    <form class="row" @submit.prevent="greet">
       <input id="greet-input" v-model="name" placeholder="Enter a name..." />
       <button type="submit">Greet</button>
     </form>
-    <p>{{ greetMsg }}</p> -->
-    <!-- <button @click="close">关机</button> -->
+    <p>{{ greetMsg }}</p>
+    <button @click="close">关机</button>
+
 
     <msg class="context"></msg>
   </main>
@@ -58,9 +72,9 @@ async function close() {
   filter: drop-shadow(0 0 2em #249b73);
 }
 
-.context{
+.context {
   width: 80%;
-  height: 300px;
+  height: 250px;
   margin: 0 auto;
   margin-top: 20px;
   /* 虚线 */
@@ -68,7 +82,6 @@ async function close() {
   border-radius: 8px;
   padding: 10px;
 }
-
 </style>
 <style>
 :root {
@@ -147,6 +160,7 @@ button {
 button:hover {
   border-color: #396cd8;
 }
+
 button:active {
   border-color: #396cd8;
   background-color: #e8e8e8;
@@ -176,9 +190,9 @@ button {
     color: #ffffff;
     background-color: #0f0f0f98;
   }
+
   button:active {
     background-color: #0f0f0f69;
   }
 }
-
 </style>
