@@ -1,10 +1,8 @@
 use tauri::{
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent}, Emitter, Runtime
 };
-// use std::thread::{ sleep };
+// use std::thread::{sleep};
 // use std::time::Duration;
-// use serde::Serialize;
-
 
 pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
     let _ = TrayIconBuilder::with_id("tray")
@@ -20,6 +18,7 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
             } => match button {
                 MouseButton::Left {} => {
                     // ...
+                    print!("Tray icon was clicked at position: ({}, {})", position.x, position.y)
                 }
                 MouseButton::Right {} => {
                     tray.app_handle().emit("tray_contextmenu", position).unwrap();
@@ -46,3 +45,59 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
         .build(app);
     Ok(())
 }
+
+
+// use tauri::{
+//     menu::{Menu, MenuItem},
+//     tray::TrayIconBuilder,
+//     Manager, Runtime,
+// };
+// use tauri::tray::TrayIconBuilder;
+
+// pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
+//     // 创建关闭菜单项
+//     let quit_i = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
+//     // 创建关于菜单项
+//     let about_i = MenuItem::with_id(app, "about", "关于", true, None::<&str>)?;
+//     // 创建菜单
+//     let menu = Menu::with_items(app, &[&quit_i, &about_i])?;
+
+//     let _tray = TrayIconBuilder::new()
+//         .icon(app.default_window_icon().unwrap().clone())
+//         .menu(&menu)
+//         .menu_on_left_click(false)
+//         .build(app)?;
+//     _tray.set_icon("tray/msg.png");
+
+//     TrayIconBuilder::new()
+//         .on_menu_event(|app, event| match event.id.as_ref() {
+//             "quit" => {
+//                 println!("quit menu item was clicked");
+//                 app.exit(0);
+//             }
+//             "about" => {
+//                 println!("about menu item was clicked");
+//                 // 打开关于窗口
+//                 let window = app.get_webview_window("main").unwrap();
+//                 window.show().unwrap();
+//                 window.set_focus().unwrap();
+//             }
+//             _ => {
+//                 println!("menu item {:?} not handled", event.id);
+//             }
+//         })
+//         .build(app)?;
+
+//     // 获取主窗口的 webview
+//     let window = app.get_webview_window("main").unwrap();
+
+//     // 在关闭窗口时清理托盘图标
+//     window.on_window_event(move |event| {
+//         if let tauri::WindowEvent::CloseRequested { .. } = event {
+//             // 直接通过托盘的事件处理销毁应用
+//             std::process::exit(0);
+//         }
+//     });
+
+//     Ok(())
+// }

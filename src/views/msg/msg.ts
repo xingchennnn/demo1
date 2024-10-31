@@ -1,6 +1,6 @@
 import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
-// import {  listen } from '@tauri-apps/api/event'
-// import { LogicalPosition } from '@tauri-apps/api/window'
+import {  listen } from '@tauri-apps/api/event'
+import { LogicalPosition } from '@tauri-apps/api/window'
 
 export let messageBoxWindowWidth = 280
 export let messageBoxWindowHeight = 100
@@ -19,7 +19,7 @@ export default async function CreateMsgBox() {
         focus: true,
         x: window.screen.width + 50,
         y: window.screen.height + 50,
-        visible: false
+        visible: true
     })
 
     // 托盘消息事件
@@ -36,21 +36,21 @@ export default async function CreateMsgBox() {
     })
 
     // 监听托盘事件
-    // let trayEnterListen = listen('tray_mouseenter', async (event) => {
-    //     const win = await WebviewWindow.getByLabel('msgbox')
-    //     if(!win) return
+    let trayEnterListen = listen('tray_mouseenter', async (event) => {
+        const win = await WebviewWindow.getByLabel('msgbox')
+        if(!win) return
 
-    //     let position :any = event.payload 
-    //     if(win) {
-    //         await win.setAlwaysOnTop(true)
-    //         await win.setFocus()
-    //         await win.setPosition(new LogicalPosition(position.x - messageBoxWindowWidth / 2, window.screen.availHeight - messageBoxWindowHeight))
-    //         await win.show()
-    //     }
-    // })
-    // let trayLeaveListen = listen('tray_mouseleave', async (event) => {
-    //     console.log(event)
-    //     const win = await WebviewWindow.getByLabel('msgbox')
-    //     await win?.hide()
-    // })
+        let position :any = event.payload 
+        if(win) {
+            await win.setAlwaysOnTop(true)
+            await win.setFocus()
+            await win.setPosition(new LogicalPosition(position.x - messageBoxWindowWidth / 2, window.screen.availHeight - messageBoxWindowHeight))
+            await win.show()
+        }
+    })
+    let trayLeaveListen = listen('tray_mouseleave', async (event) => {
+        console.log(event)
+        const win = await WebviewWindow.getByLabel('msgbox')
+        await win?.hide()
+    })
 }

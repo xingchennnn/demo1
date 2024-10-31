@@ -1,18 +1,18 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 
-// @ts-expect-error process is a nodejs global
+// 获取环境变量
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [vue()],
 
-  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
-  //
-  // 1. prevent vite from obscuring rust errors
+  // vite 选项 针对 Tauri 开发环境和仅在 `tauri dev` 或 `tauri build` 时应用的选项
+  // 1. 防止vite掩盖rust错误
   clearScreen: false,
-  // 2. tauri expects a fixed port, fail if that port is not available
+  // 2. tauri需要一个固定端口，如果该端口不可用，则失败
   server: {
     port: 1420,
     strictPort: true,
@@ -25,8 +25,13 @@ export default defineConfig(async () => ({
         }
       : undefined,
     watch: {
-      // 3. tell vite to ignore watching `src-tauri`
+      // 3. 告诉vite不要监视tauri的源码
       ignored: ["**/src-tauri/**"],
+    },
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
     },
   },
 }));
