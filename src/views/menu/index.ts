@@ -39,7 +39,7 @@ export default async function CreateTraymenu() {
     })
 
     // 监听托盘右键菜单事件
-    let trayEnterListen = listen('tray_contextmenu', async (event) => {
+    let trayEnterListen = await listen('tray_contextmenu', async (event) => {
         const win = await WebviewWindow.getByLabel('traymenu')
         if(!win) return
 
@@ -51,10 +51,10 @@ export default async function CreateTraymenu() {
             await win.show()
         }
     })
-    trayEnterListen.then(() => {
-        console.log('traymenu enter listen')
-    }).catch(err => {
-        console.error(err)
-    })
+    // trayEnterListen.then(() => {
+    //     console.log('traymenu enter listen')
+    // }).catch(err => {
+    //     console.error(err)
+    // })
 
 }

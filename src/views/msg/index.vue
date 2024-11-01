@@ -5,7 +5,7 @@
     <button @click="handleNotifyClick">发送消息通知</button>
     <button @click="openAboutWin">about</button>
     <button @click="sleep">睡眠</button>
-    <img :src="png" alt="" style="width: 150px; height: 150px;border: 1px solid #ccc;">
+    <button @click="goTestVideo">testVideo</button>
   </div>
 </template>
 
@@ -17,7 +17,6 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { TrayIcon } from '@tauri-apps/api/tray';
 import { invoke } from '@tauri-apps/api/core';
-import ping from "@/assets/vue.svg"
 
 const router = useRouter();
 
@@ -29,7 +28,6 @@ const handleClick = () => {
 }
 
 
-const png = ref()
 /**
  * 封装设置托盘图标闪烁 flashTray(true) 和取消闪烁 flashTray(false) 
  */
@@ -62,11 +60,7 @@ const flashTray = async (bool: boolean) => {
       title: "托盘图标",
       icon:'tray/icoc.png'
     }
-    // let tray2 = await TrayIcon.new(option)
-    // tray2?.setIcon(option.icon)
     tray?.setIcon(option.icon)
-    // png.value = option.icon
-
   }
 }
 
@@ -88,6 +82,11 @@ const sleep =async () => {
   console.log('睡眠')
   // 睡眠
   await invoke('close',{close:'app'})
+}
+
+const goTestVideo = () => {
+  // console.log('打开测试视频窗口')
+  router.push('/testVideo')
 }
 
 </script>

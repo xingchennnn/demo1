@@ -1,6 +1,5 @@
 import { createRouter,createMemoryHistory } from 'vue-router'
 import msg from '../views/msg/index.vue'
-import About from '../views/About.vue'
 
 const routes = [
   {
@@ -11,7 +10,12 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: About
+    component: () => import('../views/about.vue')
+  },
+  {
+    path: '/testVideo',
+    name: 'testVideo',
+    component: () => import('../views/videoTest/index.vue')
   }
 ]
 

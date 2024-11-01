@@ -1,10 +1,13 @@
 use tauri::{
-    tray::{MouseButton, TrayIconBuilder, TrayIconEvent}, Emitter, Runtime
+    image::Image, tray::{MouseButton, TrayIconBuilder, TrayIconEvent}, Emitter, Manager, Runtime
 };
 // use std::thread::{sleep};
 // use std::time::Duration;
+// use egui::include_image;
 
 pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
+    // const APP_ICON: Image<'_> = include_image!("../tray/icoc.png");
+
     let _ = TrayIconBuilder::with_id("tray")
         .tooltip("tauri")
         .icon(app.default_window_icon().unwrap().clone())
@@ -18,7 +21,13 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
             } => match button {
                 MouseButton::Left {} => {
                     // ...
-                    print!("Tray icon was clicked at position: ({}, {})", position.x, position.y)
+                    print!("Tray icon was clicked at position: ({}, {})", position.x, position.y);
+                    let app = tray.app_handle();
+                    app.get_webview_window("main").unwrap().show().unwrap();
+                    // if let Some(window) = app.get_webview_window("main") {
+                    //   let _ = window.show();
+                    //   let _ = window.set_focus();
+                    // }
                 }
                 MouseButton::Right {} => {
                     tray.app_handle().emit("tray_contextmenu", position).unwrap();
