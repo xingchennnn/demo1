@@ -56,15 +56,16 @@ const flashTray = async (bool: boolean) => {
     })
   } else {
     clearInterval(flashTimer.value)
-    // let tray = await TrayIcon.getById("tray")
+    let tray = await TrayIcon.getById("tray")
     let option = {
       id: "tray",
       title: "托盘图标",
-      icon:'./../../assets/vue.svg'
+      icon:'tray/icoc.png'
     }
-    let tray2 = await TrayIcon.new(option)
-    tray2?.setIcon(option.icon)
-    png.value = option.icon
+    // let tray2 = await TrayIcon.new(option)
+    // tray2?.setIcon(option.icon)
+    tray?.setIcon(option.icon)
+    // png.value = option.icon
 
   }
 }
