@@ -18,3 +18,9 @@ tauri-plugin-shell = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri-plugin-notification = "2"
+# 代理依赖
+pcap = "2"
+tokio = { version = "1", features = ["full"] }
+hyper = "0.14"
+
+

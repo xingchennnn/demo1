@@ -6,6 +6,7 @@
     <button @click="openAboutWin">about</button>
     <button @click="sleep">睡眠</button>
     <button @click="goTestVideo">testVideo</button>
+    <button @click="goWindowProxy">windowProxy</button>
   </div>
 </template>
 
@@ -35,7 +36,7 @@ const flashTimer = ref()
 const flashTray = async (bool: boolean) => {
   let flag = true
   if (bool) {
-    TrayIcon.getById('tray').then(async (res) => {
+    TrayIcon.getById('tray').then(async (res: TrayIcon | null) => {
       clearInterval(flashTimer.value)
       flashTimer.value = setInterval(() => {
         if (flag) {
@@ -45,8 +46,8 @@ const flashTray = async (bool: boolean) => {
         } else {
           // 支持把自定义图标放在默认icons文件夹，通过如下方式设置图标
           // res.setIcon('icons/msg.png')
-          // 支持把自定义图标放在自定义文件夹tray，需要配置tauri.conf.json参数 "bundle": {"resources": ["tray"]}
-
+          // 支持把自定义图标放在自定义文件夹tray，需要配置tauri.conf.json参数 "bundle": {"resources": ["tray"]} ,
+          //如果是png格式的图标，需要在cargo.toml中配置 tauri = { version = "2.0.0", features = [ "tray-icon", "image-png" ] }
           res?.setIcon('tray/msg.png')
         }
         flag = !flag
@@ -54,7 +55,7 @@ const flashTray = async (bool: boolean) => {
     })
   } else {
     clearInterval(flashTimer.value)
-    let tray = await TrayIcon.getById("tray")
+    let tray: TrayIcon | null = await TrayIcon.getById("tray")
     let option = {
       id: "tray",
       title: "托盘图标",
@@ -87,6 +88,12 @@ const sleep =async () => {
 const goTestVideo = () => {
   // console.log('打开测试视频窗口')
   router.push('/testVideo')
+}
+
+
+//
+const goWindowProxy = () => {
+  router.push('/windowProxy')
 }
 
 </script>

@@ -16,6 +16,11 @@ const routes = [
     path: '/testVideo',
     name: 'testVideo',
     component: () => import('../views/videoTest/index.vue')
+  },
+  {
+    path: '/windowProxy',
+    name: 'windowProxy',
+    component: () => import('../views/windowProxy/index.vue')
   }
 ]
 

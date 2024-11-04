@@ -1,5 +1,5 @@
 use tauri::{
-    image::Image, tray::{MouseButton, TrayIconBuilder, TrayIconEvent}, Emitter, Manager, Runtime
+     tray::{MouseButton, TrayIconBuilder, TrayIconEvent}, Emitter, Manager, Runtime
 };
 // use std::thread::{sleep};
 // use std::time::Duration;
