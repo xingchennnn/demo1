@@ -6,6 +6,10 @@
 mod commands;
 mod tray;
 
+
+
+
+
 #[tauri::command]
 fn greet(name: &str) -> String {
 
@@ -33,7 +37,7 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet, commands::close ,commands::open_devtools])
+        .invoke_handler(tauri::generate_handler![greet, commands::close , commands::open_devtools, commands::start_proxy]) 
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
